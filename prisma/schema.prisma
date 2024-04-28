@@ -13,6 +13,7 @@ datasource db {
   url      = env("DATABASE_URL")
 }
 
+<<<<<<< HEAD
 enum Role {
   ADMIN
   USER
@@ -71,5 +72,14 @@ model CartItem {
   quantity Int
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
+=======
+model User {
+  id  String  @id @default(auto()) @map("_id")  @db.ObjectId
+  name String
+  email String @unique
+  password String
+  createdAt DateTime @default(now())
+  updateAt DateTime @updatedAt
+>>>>>>> 01e9a1c70a3e400f3647ee66bef6c1a137f5d7b8
 
 }

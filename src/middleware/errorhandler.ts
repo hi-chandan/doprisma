@@ -10,9 +10,14 @@ export const errorHandler = (
   next: NextFunction,
 ) => {
   // http errors
+<<<<<<< HEAD
   if (HttpError.isHttpError(err)) {
     return res.status(err.statusCode).json(err.jsonData);
   }
+=======
+  if (HttpError.isHttpError(err))
+    return res.status(err.statusCode).json(err.jsonData);
+>>>>>>> 01e9a1c70a3e400f3647ee66bef6c1a137f5d7b8
   // console on error
   else if (err instanceof ZodError) {
     return res.status(404).json({
@@ -21,6 +26,7 @@ export const errorHandler = (
       statuscode: 404,
     });
   }
+<<<<<<< HEAD
 
   console.error(err);
 
@@ -28,4 +34,10 @@ export const errorHandler = (
   return res
     .status(500)
     .send(new InternalServerError("This is Not Working").jsonData);
+=======
+  console.error(err);
+
+  // unknown errors
+  return res.status(500).send(new InternalServerError(err.message).jsonData);
+>>>>>>> 01e9a1c70a3e400f3647ee66bef6c1a137f5d7b8
 };

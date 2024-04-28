@@ -37,9 +37,12 @@ export class InternalServerError extends HttpError {
     super(message, 500, error);
   }
 }
+<<<<<<< HEAD
 
 export class ConflictError extends HttpError {
   constructor(message: string, errors?: any) {
     super(message, 409, errors);
   }
 }
+=======
+>>>>>>> 01e9a1c70a3e400f3647ee66bef6c1a137f5d7b8
