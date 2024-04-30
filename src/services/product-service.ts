@@ -90,4 +90,4 @@ export class ProductService {
   }
 }
 
-export const productService = new ProductService(prisma.product);
+export const productService = new ProductService(prisma.product as any);

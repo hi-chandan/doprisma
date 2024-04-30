@@ -1,0 +1,201 @@
+<!-- <!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Notes App</title>
+ Font Awesome CDN
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <style>
+        .container {
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+        .btn {
+            text-align: center;
+            margin-bottom: 20px;
+        }
+        .noteBox {
+            border: 1px solid #ccc;
+            border-radius: 5px;
+            padding: 10px;
+            margin-bottom: 10px;
+        }
+        .icons {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 10px;
+        }
+        .icons div:last-child {
+            display: flex;
+            gap: 10px;
+        }
+        .textarea textarea {
+            width: 100%;
+            min-height: 100px;
+            resize: vertical;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+            padding: 5px;
+            margin-bottom: 10px;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="btn">
+            <button class="Add">Add Note</button>
+        </div>
+        <div class="notes-container"></div>
+    </div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            const addBtn = document.querySelector('.Add');
+            const container = document.querySelector('.notes-container');
+
+            const saveNote = () => {
+                const textareas = document.querySelectorAll('.text');
+                const data = [];
+                textareas.forEach(textarea => {
+                    data.push(textarea.value);
+                });
+                console.log(data);
+            }
+
+            addBtn.addEventListener('click', () => {
+                const noteBox = document.createElement('div');
+                noteBox.className = 'noteBox';
+                noteBox.innerHTML = `
+                    <div class="icons">
+                        <div>Notes</div>
+                        <div>
+                            <i class="save fa-regular fa-floppy-disk"></i>
+                            <i class="trash fa-solid fa-trash"></i>
+                        </div>
+                    </div>
+                    <div class="textarea">
+                        <textarea class="text" placeholder="Write Something Here"></textarea>
+                    </div>`;
+                container.appendChild(noteBox);
+
+                noteBox.querySelector('.trash').addEventListener('click', () => {
+                    noteBox.remove();
+                });
+
+                noteBox.querySelector('.save').addEventListener('click', () => {
+                    saveNote();
+                });
+            });
+        });
+    </script>
+</body>
+</html>
+-->
+
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Notes App</title>
+    <!-- Font Awesome CDN -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <style>
+        .container {
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+        .btn {
+            text-align: center;
+            margin-bottom: 20px;
+        }
+        .noteBox {
+            border: 1px solid #ccc;
+            border-radius: 5px;
+            padding: 10px;
+            margin-bottom: 10px;
+        }
+        .icons {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 10px;
+        }
+        .icons div:last-child {
+            display: flex;
+            gap: 10px;
+        }
+        .textarea textarea {
+            width: 100%;
+            min-height: 100px;
+            resize: vertical;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+            padding: 5px;
+            margin-bottom: 10px;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="btn">
+            <button class="Add">Add Note</button>
+        </div>
+        <div class="notes-container"></div>
+    </div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            const addBtn = document.querySelector('.Add');
+            const container = document.querySelector('.notes-container');
+
+            const saveNote = () => {
+                const textareas = document.querySelectorAll('.text');
+                const data = [];
+                textareas.forEach(textarea => {
+                    data.push(textarea.value);
+                });
+                console.log(data);
+            }
+
+            addBtn.addEventListener('click', () => {
+                const noteBox = document.createElement('div');
+                noteBox.className = 'noteBox';
+                noteBox.innerHTML = `
+                    <div class="icons">
+                        <div>Notes</div>
+                        <div>
+                            <i class="save fa-regular fa-floppy-disk"></i>
+                            <i class="trash fa-solid fa-trash"></i>
+                        </div>
+                    </div>
+                    <div class="textarea">
+                        <textarea class="text" placeholder="Write Something Here"></textarea>
+                    </div>`;
+                container.appendChild(noteBox);
+
+                noteBox.querySelector('.trash').addEventListener('click', () => {
+                    noteBox.remove();
+                });
+
+                noteBox.querySelector('.save').addEventListener('click', () => {
+                    saveNote();
+                });
+
+                noteBox.querySelector('.text').addEventListener('keydown', (event) => {
+                    if (event.key === 'Enter') {
+                        event.preventDefault(); // Prevent default behavior of Enter key
+                        saveNote(); // Call the saveNote function when Enter key is pressed
+                    }
+                });
+            });
+        });
+    </script>
+</body>
+</html>
+

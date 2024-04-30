@@ -12,7 +12,6 @@ export const wrapper = (func: ReqHandler): ReqHandler => {
     try {
       const result = func(req, res, next);
 
-
       if (result instanceof Promise) {
         result.then((value: any) => handleResult(value, res)).catch(next);
       } else {
@@ -25,11 +24,7 @@ export const wrapper = (func: ReqHandler): ReqHandler => {
 };
 
 function handleResult(result: any, res: any): void {
-
   if (HttpRes.isHttpRes(result)) {
     res.status(result.status).json(result);
   } else if (result && result !== res) res.send(result);
-
-  if (HttpRes.isHttpRes(result)) res.status(result.status).json(result);
-  else if (result && result !== res) res.send(result);
 }

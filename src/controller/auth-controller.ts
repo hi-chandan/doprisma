@@ -17,20 +17,28 @@ export class AuthController {
 
     const user = await this.userService.create(body);
 
-    await this.tokenService.generate(user.id, res);
+    const token = await this.tokenService.generate(user.id);
 
+    return res.cookie("token", token, {
+      secure: true,
+      httpOnly: true,
+    });
     return HttpRes.created(user, "user is created successfully");
+
+    // return res.status(httpRes.status).send(httpRes);
   }
 
   async login(req: Request, res: Response) {
     const body = loginInput.parse(req.body);
 
     const user = await this.userService.login(body);
-    console.log("user is match", user);
 
-    await this.tokenService.generate(user.id, res);
-
-    return HttpRes.ok(user, "user login successfully");
+    const token = await this.tokenService.generate(user.id);
+    res.cookie("token", token, {
+      secure: true,
+      httpOnly: true,
+    });
+    return HttpRes.created(user, "user login successfully");
   }
 
   async me(req: Request, res: Response) {

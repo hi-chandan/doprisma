@@ -34,7 +34,6 @@ export class UserService {
     if (!user) {
       throw new NotFoundError("User is not exist", 404);
     }
-    console.log("this is user password", user.password);
 
     const Match = await bcrypt.compare(password, user.password);
     if (!Match) {
@@ -86,4 +85,4 @@ export class UserService {
   }
 }
 
-export const userService = new UserService(prisma.user);
+export const userService = new UserService(prisma.user as any);

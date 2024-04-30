@@ -1,4 +1,4 @@
-import { PrismaClient } from "@prisma/client";
+import { CartItem, Prisma, PrismaClient } from "@prisma/client";
 import { prisma } from "../config/db-config";
 import { BadRequestError } from "../utiles/httperrors";
 
@@ -7,11 +7,11 @@ export class CartService {
 
   async addCart(data: any, userId: any) {
     const checkProductId = await this.cartModel.findMany({
-      where: { productId: data.productId },
+      where: { productId: data.productId, userId: userId },
     });
 
-    if (checkProductId.length > 0) {
-      throw new BadRequestError("Product is already added to Cart");
+    if (checkProductId.length != 0) {
+      throw new BadRequestError("product is already exist");
     }
 
     const addCart = await this.cartModel.create({
@@ -83,4 +83,4 @@ export class CartService {
   }
 }
 
-export const cartService = new CartService(prisma.cartItem);
+export const cartService = new CartService(prisma.cartItem as any);

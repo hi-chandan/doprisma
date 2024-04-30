@@ -1,11 +1,7 @@
-async function myFunction() {
-  // Your asynchronous code here
-}
+const number = [12, 2, 4, 8, 8];
 
-const result = myFunction();
+const ans = number.reduce((val, next) => {
+  return val + next;
+});
 
-if (result instanceof Promise) {
-  console.log("myFunction returns a Promise");
-} else {
-  console.log("myFunction does not return a Promise");
-}
+console.log("This is ans", ans);
