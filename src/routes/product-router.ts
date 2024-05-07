@@ -3,6 +3,7 @@ import { productControl } from "../controller/product-controller";
 import { wrapper } from "../utiles/wrapper";
 import { getaccess } from "../middleware/user-auth";
 import { adminMiddleware } from "../middleware/admin";
+import upload from "../config/multer";
 
 const productRouter: Router = Router();
 
@@ -10,6 +11,7 @@ productRouter.post(
   "/create",
   wrapper(getaccess),
   wrapper(adminMiddleware),
+  upload.single("file"),
   wrapper(productControl.createProduct.bind(productControl)),
 );
 productRouter.get(
@@ -35,5 +37,8 @@ productRouter.get(
   wrapper(adminMiddleware),
   wrapper(productControl.getProductById.bind(productControl)),
 );
-
+productRouter.get(
+  "/search",
+  wrapper(productControl.SearchProduct.bind(productControl)),
+);
 export default productRouter;

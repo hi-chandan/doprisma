@@ -68,13 +68,21 @@ export class OrderService {
         },
       });
 
-      return order;
+      const CreateOrder = {
+        order,
+        orderEvent,
+      };
+
+      return CreateOrder;
     });
   }
   async listOrder(userId: any) {
     const listOrder = await this.orderModel.findMany({
       where: {
         userId: userId,
+      },
+      include: {
+        event: true,
       },
     });
 
@@ -85,28 +93,65 @@ export class OrderService {
     return listOrder;
   }
   async cancelOrder(userId: any, orderId: any) {
-    const isUserOrder = await this.orderModel.findMany({
-      where: { userId: userId },
+    const isUserOrder = await this.orderModel.findUniqueOrThrow({
+      where: { userId: userId, id: orderId },
     });
 
-    if (isUserOrder.length == 0) {
-      throw new BadRequestError("No Order in OrderList");
+    if (!isUserOrder) {
+      throw new BadRequestError("Order Id is wrong");
     }
 
-    console.log("This is isUserOrder", isUserOrder.length);
+    const updateOrder = await this.orderModel.update({
+      where: {
+        id: isUserOrder.id,
+      },
+      data: {
+        status: "CANCELLED",
+      },
+    });
 
-    // const findorder = await this.orderModel.update({
-    //   where: {
-    //     id: orderId,
-    //   },
-    //   data: {
-    //     status: "CANCELLED",
-    //   },
-    // });
+    const updateOrderEvent = await this.orderEvent.findFirstOrThrow({
+      where: {
+        orderId: isUserOrder.id,
+      },
+    });
 
-    // return cancelOrder;
+    if (!updateOrderEvent) {
+      throw new BadRequestError("No Order Event ");
+    }
+
+    const updateEvent = await this.orderEvent.update({
+      where: {
+        id: updateOrderEvent.id,
+      },
+      data: {
+        status: "CANCELLED",
+      },
+    });
+
+    const allUpdate = {
+      updateOrder,
+      updateEvent,
+    };
+
+    return allUpdate;
   }
-  async getOrderById() {}
+  async getOrderById(orderId: any) {
+    console.log("This is orderId", orderId);
+    const getOrder = await this.orderModel.findUniqueOrThrow({
+      where: {
+        id: orderId,
+      },
+    });
+
+    console.log("this is getOrder", getOrder);
+
+    if (!getOrder) {
+      throw new BadRequestError("Order not found");
+    }
+
+    return getOrder;
+  }
 }
 
 export const orderService = new OrderService(

@@ -1,16 +1,21 @@
 import { Request, Response } from "express";
 import { ProductService, productService } from "../services/product-service";
-import { productInput } from "../schema/project-schema";
+import { productInput } from "../schema/product-schama";
 import { HttpRes } from "../utiles/httpres";
-import { clearScreenDown } from "readline";
+import cloudinary from "cloudinary";
 export class ProductController {
   constructor(private productService: ProductService) {}
   async createProduct(req: Request, res: Response) {
-    const body = productInput.parse(req.body);
+    const data = productInput.parse(req.body);
+    const userId = req.user.id;
+    const file = req.file?.path as string;
 
-    const product = await productService.create(body);
+    // Upload image to Cloudinary
+    const product = await this.productService.create(data, userId, file);
 
-    return HttpRes.ok(product, "product is created");
+    // Create product with image links
+
+    return HttpRes.ok(product, "Product is created");
   }
 
   async getAllProduct(req: Request, res: Response) {
@@ -40,6 +45,14 @@ export class ProductController {
     const ProductById = await this.productService.getProductById(productId);
 
     return HttpRes.ok(ProductById, "product detail");
+  }
+
+  async SearchProduct(req: Request, res: Response) {
+    const name = req.query.name;
+    const description = req.query.description;
+    const product = await this.productService.SearchProduct(name, description);
+
+    return HttpRes.ok(product, "all Search product");
   }
 }
 

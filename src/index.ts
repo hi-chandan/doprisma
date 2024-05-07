@@ -8,8 +8,15 @@ import productRouter from "./routes/product-router";
 import addressRouter from "./routes/address-router";
 import cartRouter from "./routes/cart-router";
 import orderRouter from "./routes/order-router";
+import { cloud } from "./config/cloudnary";
+
 async function main() {
+  // connecting to database
   await prisma.$connect();
+
+  // cloudinary config
+  cloud();
+  //
 
   const app = express();
 

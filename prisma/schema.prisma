@@ -53,11 +53,19 @@ model Product {
   description String
   price Int
   tags String
+  image Image[]
    createdAt DateTime @default(now())
   updateAt  DateTime @updatedAt
 
   carditem CartItem[]
   ordres OrderProduct[]
+
+}
+
+type Image {
+  publicId    String
+  url       String
+  id        String @db.ObjectId
 
 }
 

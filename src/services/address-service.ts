@@ -91,4 +91,4 @@ export class AddressService {
   }
 }
 
-export const addressService = new AddressService(prisma.address);
+export const addressService = new AddressService(prisma.address as any);

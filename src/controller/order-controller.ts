@@ -22,11 +22,18 @@ export class OrderControl {
   }
   async cancelOrder(req: Request, res: Response) {
     const userId = req.user.id;
-    const CancelOrder = await this.orderService.cancelOrder(userId);
+    const orderId = req.params.id;
+    console.log("This is orderId", orderId, userId);
+    const CancelOrder = await this.orderService.cancelOrder(userId, orderId);
 
     return HttpRes.ok(CancelOrder, "your order is Cancel");
   }
-  async getOrderById(req: Request, res: Response) {}
+  async getOrderById(req: Request, res: Response) {
+    const orderId = req.params.id;
+    const getOrderbyId = await this.orderService.getOrderById(orderId);
+
+    return HttpRes.ok(getOrderbyId, "your order ");
+  }
 }
 
 export const orderControl = new OrderControl(orderService);

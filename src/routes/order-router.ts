@@ -16,8 +16,13 @@ orderRouter.get(
   wrapper(orderControl.listOrder.bind(orderControl)),
 );
 orderRouter.put(
-  "/orderCancel",
+  "/orderCancel/:id",
   wrapper(getaccess),
   wrapper(orderControl.cancelOrder.bind(orderControl)),
+);
+orderRouter.get(
+  "/Order/:id",
+  wrapper(getaccess),
+  wrapper(orderControl.getOrderById.bind(orderControl)),
 );
 export default orderRouter;

@@ -1,13 +1,26 @@
 import { PrismaClient } from "@prisma/client";
 import { prisma } from "../config/db-config";
 import { BadRequestError } from "../utiles/httperrors";
-import { ProductInput } from "../schema/project-schema";
-
+import { ProductInput } from "../schema/product-schama";
+import cloudinary from "cloudinary";
 export class ProductService {
   constructor(private productModel: PrismaClient["product"]) {}
 
-  async create(data: ProductInput) {
-    const product = await this.productModel.create({ data });
+  async create(data: ProductInput, userId: string, file: any) {
+    const result = await cloudinary.v2.uploader.upload(file, {
+      folder: "check/product",
+    });
+
+    const product = await this.productModel.create({
+      data: {
+        ...data,
+        image: {
+          publicId: result.public_id,
+          url: result.secure_url,
+          id: userId,
+        },
+      },
+    });
 
     if (!product) {
       return new BadRequestError("product not Created");
@@ -58,6 +71,13 @@ export class ProductService {
       throw new BadRequestError("product is not exist");
     }
 
+    const publicId = product.image[0].publicId;
+    const imagedelete = await cloudinary.v2.uploader.destroy(publicId);
+
+    if (!imagedelete) {
+      throw new BadRequestError("Cloudinary image is not deleted");
+    }
+
     const deleteProduct = await this.productModel.delete({
       where: { id: productId },
     });
@@ -87,6 +107,30 @@ export class ProductService {
     }
 
     return singleProduct;
+  }
+
+  async SearchProduct(name: any, description: any) {
+    const serachproduct = await this.productModel.findMany({
+      where: {
+        description: {
+          contains: description,
+          mode: "insensitive",
+          // Partial match on the description field
+        },
+        name: {
+          contains: name,
+          mode: "insensitive",
+        },
+      },
+    });
+    const count = serachproduct.length;
+
+    const allDetail = {
+      serachproduct,
+      count,
+    };
+
+    return allDetail;
   }
 }
 
